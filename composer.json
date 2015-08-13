@@ -1,0 +1,30 @@
+{
+  "name": "grzegab/wkhtmltopdf",
+  "type": "library",
+  "description": "WKHTMLTOPDF generator for CakePHP3",
+  "keywords": [
+    "pdf",
+    "wkhtmltopdf",
+    "cakephp3"
+  ],
+  "homepage": "https://github.com/grzegab/wktohtmlpdf-cakephp3",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Grzegorz Gabryel",
+      "email": "greg@grzegab.eu",
+      "homepage": "http://grzegab.eu"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "Pdf-generator": "src"
+    }
+  }
+}

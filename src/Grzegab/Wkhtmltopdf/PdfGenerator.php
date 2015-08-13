@@ -85,13 +85,13 @@ class PdfGenerator extends AppController
 
     /**
      * @param AppController $creator    Controller object that PDF will be created from
-     * @throws WkhtmltopdfException     If there is no object passed while creating
+     * @throws \Exception     If there is no object passed while creating
      */
     public function __construct(AppController $creator)
     {
         parent::__construct();
         if(null === $creator) {
-            throw new WkhtmltopdfException('PDF class must inject AppController class (preferred $this variable)');
+            throw new \Exception('PDF class must inject AppController class (preferred $this variable)');
         }
         $this->creatorClass = $creator;
         $this->checkGlobalConfig();
@@ -100,7 +100,7 @@ class PdfGenerator extends AppController
     /**
      * Main class for generating PDF file
      * @return string                   CakePHP response
-     * @throws WkhtmltopdfException     if file cannot be saved
+     * @throws \Exception     if file cannot be saved
      */
     public function generatePDF()
     {
@@ -123,7 +123,7 @@ class PdfGenerator extends AppController
             }
             $pdfFile = WWW_ROOT . $this->pdfSavePath . $this->pdfName . '.pdf';
             if(!file_put_contents($pdfFile, $pdfContent)) {
-                throw new WkhtmltopdfException('File cannot be saved in location: '.WWW_ROOT . $this->pdfSavePath);
+                throw new \Exception('File cannot be saved in location: '.WWW_ROOT . $this->pdfSavePath);
             }
             $response->type('txt');
             $response->charset($this->encoding);
@@ -141,7 +141,7 @@ class PdfGenerator extends AppController
     private function buildCommand()
     {
         if(!is_executable($this->wkhtmltopdfBinary)) {
-            throw new WkhtmltopdfException('Cannot run wkhtmltopdf - check executable');
+            throw new \Exception('Cannot run wkhtmltopdf - check executable');
         }
 
         $command = '';
@@ -166,7 +166,7 @@ class PdfGenerator extends AppController
         } elseif($this->generateFromHtml) {
             $command .= ' - ';
         } else {
-            throw new WkhtmltopdfException('Have no source to generate from');
+            throw new \Exception('Have no source to generate from');
         }
         $this->pdfTmpFile = $this->createTmpFile($this->pdfName, 'pdf');
         $command .= $this->pdfTmpFile;
@@ -187,7 +187,7 @@ class PdfGenerator extends AppController
      * @param string $cmd               the command which will be executed to generate the pdf
      * @return array
      *
-     * @throws WkhtmltopdfException     if any error
+     * @throws \Exception     if any error
      */
     public function executeCommand($cmd)
     {
@@ -201,7 +201,7 @@ class PdfGenerator extends AppController
         $proc = proc_open($cmd, $descriptorspec, $pipes);
 
         if (!is_resource($proc)) {
-            throw new WkhtmltopdfException('No resource found while executing command');
+            throw new \Exception('No resource found while executing command');
         }
         fwrite($pipes[0], $this->html);
         fclose($pipes[0]);
@@ -222,12 +222,12 @@ class PdfGenerator extends AppController
      * @param string $stdout            Output pipe
      * @param string $stderr            Error pipe
      * @param string $cmd               Executed command
-     * @throws WkhtmltopdfException     if any error
+     * @throws \Exception     if any error
      */
     private function checkStatus($status, $stdout, $stderr, $cmd)
     {
         if (0 !== $status) {
-            throw new WkhtmltopdfException(sprintf(
+            throw new \Exception(sprintf(
                 'Problem while executing command (%s):' . "\n"
                 . 'stderr: "%s"' . "\n" . 'stdout: "%s"' . "\n",
                 $cmd, $stderr, $stdout));
@@ -415,6 +415,16 @@ class PdfGenerator extends AppController
     public function wkhtmltopdf($value)
     {
         $this->advancedConfig[] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $name  of PDF file
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->pdfName = $name;
         return $this;
     }
 

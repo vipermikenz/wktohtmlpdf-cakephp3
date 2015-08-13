@@ -24,7 +24,7 @@
   },
   "autoload": {
     "psr-0": {
-      "Pdf-generator": "src"
+      "Grzegab\Wkhtmltopdf\PdfGenerator": "src"
     }
   }
 }

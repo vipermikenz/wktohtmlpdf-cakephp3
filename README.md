@@ -5,6 +5,7 @@ Installation
 --------------------
 
 Install wkhtmltopdf on your system! (http://wkhtmltopdf.org)
+do not use apt-get for this, download from website.
 
 ## Install by composer:
 ``` $

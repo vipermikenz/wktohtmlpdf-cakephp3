@@ -178,8 +178,12 @@ class PdfGenerator extends AppController
      */
     private function renderHtml()
     {
-        $viewFile = ($this->template)?:$this->creatorClass->view;
         $layout = ($this->layout)?:$this->creatorClass->layout;
+        if(!empty($this->creatorClass->viewBuilder()->template())) {
+            $viewFile = $this->creatorClass->viewBuilder()->template();
+        } else {
+            throw new \Exception('Please set template file');
+        }
         return $this->creatorClass->render($viewFile, $layout)->body();
     }
 

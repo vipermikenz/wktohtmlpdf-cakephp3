@@ -4,8 +4,7 @@ PDF generator for CakePHP3 (wkhtmltopdf)
 Installation
 --------------------
 
-Install wkhtmltopdf on your system! (http://wkhtmltopdf.org)
-do not use apt-get for this, download from website.
+Install wkhtmltopdf on your system! (http://wkhtmltopdf.org).
 
 ## Install by composer:
 ``` $
@@ -30,13 +29,16 @@ Usage
 Add namespace  on each controller that will use pdf generator:  
 use Grzegab\Wkhtmltopdf\PdfGenerator;  
   
-Create new action with return of PDF object:  
+Create new action with return of PDF object (e.g. invoicePdf):
 public function invoicePdf() {};
 
 Build controller, setup view variables as you whis to page look like.  
 
 Init component:  
-$pdf = new PdfGenerator($this);  
+$pdf = new PdfGenerator($this);
+
+Must set template name and view file (even if default is used):
+$this->viewBuilder()->layout('pdf')->template('invoice');
 
 Return PDF as response from controller:  
 return $pdf->save('pdfName')->wkhtmltopdf('-O landscape')->generatePDF();
@@ -49,7 +51,7 @@ return $pdf->save('pdf_name')->downloadDisabled()->generatePDF();
 Response will be path of saved file.
 
 #### Remember
-All assets (images, js etc.) *MUST* have absolute path.  
+All assets (images, js etc.) *MUST* have absolute path for PDF generator.
 Name of pdf file should be without extension "pdf".  
 
 
@@ -57,12 +59,13 @@ Name of pdf file should be without extension "pdf".
 
 in src/Controller/InvoiceController.php:  
   
-use Grzegab/Wkhtmltopdf;  
+use Grzegab\Wkhtmltopdf\PdfGenerator;
   
 public function invoicePDF($id)   
 {  
     // ... find invoice by id and other logic  
-    $pdf = new PDF($this);  
+    $pdf = new PDF($this);
+    $this->viewBuilder()->layout('pdf')->template('invoice');
     return $pdf->save('name0123', 'pdf/names')->wkhtmltopdf('-O landscape')->generatePDF();  
 }  
   
